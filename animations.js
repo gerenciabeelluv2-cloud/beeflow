@@ -155,5 +155,44 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   updatePricing("mensal");
+
+  // Fetch latest release and update download buttons
+  const macDownloadBtn = document.querySelector('a[data-platform="mac"]');
+  const windowsDownloadBtn = document.querySelector('a[data-platform="windows"]');
+  
+  if (macDownloadBtn || windowsDownloadBtn) {
+    fetch('https://api.github.com/repos/gerenciabeelluv2-cloud/beeflow/releases/latest')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch release');
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Update Mac download button with DMG file
+        if (macDownloadBtn) {
+          const dmgAsset = data.assets.find(asset => asset.name.endsWith('.dmg'));
+          if (dmgAsset) {
+            macDownloadBtn.href = dmgAsset.browser_download_url;
+            const originalText = macDownloadBtn.textContent.replace(/\s*\(v[\d.]+\)\s*$/, '');
+            macDownloadBtn.textContent = `${originalText} (v${data.tag_name})`;
+          }
+        }
+        
+        // Update Windows download button with EXE file
+        if (windowsDownloadBtn) {
+          const exeAsset = data.assets.find(asset => asset.name.endsWith('.exe'));
+          if (exeAsset) {
+            windowsDownloadBtn.href = exeAsset.browser_download_url;
+            const originalText = windowsDownloadBtn.textContent.replace(/\s*\(v[\d.]+\)\s*$/, '');
+            windowsDownloadBtn.textContent = `${originalText} (v${data.tag_name})`;
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching latest release:', error);
+        // Keep the original href if fetch fails
+      });
+  }
 });
 
