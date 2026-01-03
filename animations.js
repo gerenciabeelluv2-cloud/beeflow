@@ -157,10 +157,11 @@ document.addEventListener("DOMContentLoaded", () => {
   updatePricing("mensal");
 
   // Fetch latest release and update download buttons
-  const macDownloadBtn = document.querySelector('a[data-platform="mac"]');
+  const macSiliconBtn = document.querySelector('a[data-platform="mac-silicon"]');
+  const macIntelBtn = document.querySelector('a[data-platform="mac-intel"]');
   const windowsDownloadBtn = document.querySelector('a[data-platform="windows"]');
   
-  if (macDownloadBtn || windowsDownloadBtn) {
+  if (macSiliconBtn || macIntelBtn || windowsDownloadBtn) {
     fetch('https://api.github.com/repos/gerenciabeelluv2-cloud/beeflow/releases/latest')
       .then(response => {
         if (!response.ok) {
@@ -169,13 +170,33 @@ document.addEventListener("DOMContentLoaded", () => {
         return response.json();
       })
       .then(data => {
-        // Update Mac download button with DMG file
-        if (macDownloadBtn) {
-          const dmgAsset = data.assets.find(asset => asset.name.endsWith('.dmg'));
+        // Update Mac Silicon download button with DMG file
+        if (macSiliconBtn) {
+          const siliconPatterns = ['-silicon', '-arm64', '-apple-silicon', '-m1', '-m2', '-m3', 'arm64'];
+          const dmgAsset = data.assets.find(asset => {
+            const name = asset.name.toLowerCase();
+            return asset.name.endsWith('.dmg') && 
+                   siliconPatterns.some(pattern => name.includes(pattern));
+          });
           if (dmgAsset) {
-            macDownloadBtn.href = dmgAsset.browser_download_url;
-            const originalText = macDownloadBtn.textContent.replace(/\s*\(v[\d.]+\)\s*$/, '');
-            macDownloadBtn.textContent = `${originalText} (v${data.tag_name})`;
+            macSiliconBtn.href = dmgAsset.browser_download_url;
+            const originalText = macSiliconBtn.textContent.replace(/\s*\(v[\d.]+\)\s*$/, '');
+            macSiliconBtn.textContent = `${originalText} (v${data.tag_name})`;
+          }
+        }
+        
+        // Update Mac Intel download button with DMG file
+        if (macIntelBtn) {
+          const intelPatterns = ['-intel', '-x64', '-x86_64', 'intel', 'x64'];
+          const dmgAsset = data.assets.find(asset => {
+            const name = asset.name.toLowerCase();
+            return asset.name.endsWith('.dmg') && 
+                   intelPatterns.some(pattern => name.includes(pattern));
+          });
+          if (dmgAsset) {
+            macIntelBtn.href = dmgAsset.browser_download_url;
+            const originalText = macIntelBtn.textContent.replace(/\s*\(v[\d.]+\)\s*$/, '');
+            macIntelBtn.textContent = `${originalText} (v${data.tag_name})`;
           }
         }
         
