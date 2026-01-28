@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obrigado — Beeflow</title>
+    <meta name="description" content="Obrigado por comprar o Beeflow. Complete seu cadastro para começar.">
+    <link rel="icon" type="image/png" href="assets/logo-beeflow.png" sizes="32x32">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .obrigado-section {
+            min-height: 100vh;
+            padding: 140px 0 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, #0e0c1c 0%, #0b0d1a 48%, #0a0c18 100%);
+        }
+        .obrigado-container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        .obrigado-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 22px;
+            padding: 48px 40px;
+            box-shadow: 0 18px 46px rgba(0,0,0,0.28);
+            backdrop-filter: blur(16px);
+            text-align: center;
+        }
+        .obrigado-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+            display: block;
+        }
+        .obrigado-card h1 {
+            font-size: 36px;
+            margin-bottom: 16px;
+            background: linear-gradient(110deg, var(--purple), var(--blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .obrigado-card p {
+            color: var(--text-2);
+            font-size: 17px;
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <img src="assets/logo-beeflow.png" alt="" aria-hidden="true" class="logo-img">
+                <span>Beeflow</span>
+            </a>
+            <nav class="nav-menu">
+                <a href="/#hero" class="nav-link">Home</a>
+                <a href="/#features" class="nav-link">Vantagens</a>
+                <a href="/#planos" class="nav-link">Planos</a>
+            </nav>
+            
+        </div>
+    </header>
+
+    <!-- Obrigado Section -->
+    <section class="obrigado-section">
+        <div class="obrigado-container">
+            <div class="obrigado-card float">
+                <span class="obrigado-icon">✓</span>
+                <h1>Obrigado pela compra!</h1>
+                <p>Sua compra foi confirmada. Escolha sua plataforma e baixe o Beeflow Desk.</p>
+                
+                <div class="download-grid" style="margin-top: 40px;">
+                    <article class="download-card float">
+                        <div class="download-icon"></div>
+                        <h3>Mac Apple Silicon</h3>
+                        <p>Compatível com macOS Catalina ou superior (M1, M2, M3).</p>
+                        <a href="#" class="btn-primary btn-block" data-platform="mac-silicon">Baixar para Mac Silicon</a>
+                    </article>
+                    <article class="download-card float delay-1">
+                        <div class="download-icon"></div>
+                        <h3>Mac Intel</h3>
+                        <p>Compatível com macOS Catalina ou superior (Intel).</p>
+                        <a href="#" class="btn-primary btn-block" data-platform="mac-intel">Baixar para Mac Intel</a>
+                    </article>
+                    <article class="download-card float delay-2">
+                        <div class="download-icon">⊞</div>
+                        <h3>Versão para Windows</h3>
+                        <p>Compatível com Windows 10 ou superior.</p>
+                        <a href="#" class="btn-primary btn-block" data-platform="windows">Baixar para Windows</a>
+                    </article>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Script -->
+    <script src="obrigado.js"></script>
+</body>
+</html>
+
