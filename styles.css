@@ -975,7 +975,7 @@ a { color: inherit; }
 }
 @media (max-width: 920px) {
     .nav-menu, .nav-actions { display: none; }
-    .nav-mobile { display: block; }
+    .nav-mobile { display: flex; align-items: center; gap: 14px; }
     .logo span { font-size: 18px; }
     .logo-img { height: 28px; }
     .prints-grid { gap: 32px; }
