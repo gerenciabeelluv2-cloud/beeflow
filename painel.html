@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Painel — Beeflow</title>
+    <meta name="description" content="Acompanhe criadoras, sessões e equipe da sua agência em tempo real.">
+    <meta name="robots" content="noindex">
+    <link rel="icon" type="image/png" href="assets/logo-beeflow.png" sizes="32x32">
+    <!-- App na Tela de Início (iPhone e Android) -->
+    <link rel="manifest" href="painel.webmanifest">
+    <link rel="apple-touch-icon" href="assets/app/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Beeflow">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#111113">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="painel.css">
+    <script src="painel.js" defer></script>
+</head>
+<body class="pn">
+    <!-- Login -->
+    <main id="view-login" class="pn-login" hidden>
+        <form id="login-form" class="pn-login-card" novalidate>
+            <a href="index.html" class="pn-brand pn-login-brand">
+                <img src="assets/logo-beeflow.png" alt="" aria-hidden="true">
+                <span>Beeflow</span>
+            </a>
+            <h1>Entrar no painel</h1>
+            <p class="pn-muted">Use o mesmo e-mail e senha do app Beeflow.</p>
+
+            <label class="pn-field">
+                <span>E-mail</span>
+                <input id="login-email" type="email" autocomplete="username" required>
+            </label>
+            <label class="pn-field">
+                <span>Senha</span>
+                <input id="login-password" type="password" autocomplete="current-password" required>
+            </label>
+            <label class="pn-check">
+                <input id="login-remember" type="checkbox">
+                <span>Manter conectado neste computador</span>
+            </label>
+
+            <p id="login-error" class="pn-error" role="alert" hidden></p>
+
+            <button id="login-submit" type="submit" class="pn-btn pn-btn-primary pn-btn-block">Entrar</button>
+            <p class="pn-muted pn-small">Esqueceu a senha? Recupere pelo app, na tela de login.</p>
+        </form>
+    </main>
+
+    <!-- Painel -->
+    <div id="view-panel" hidden>
+        <header class="pn-topbar">
+            <div class="pn-topbar-inner">
+                <a href="painel.html" class="pn-brand">
+                    <img src="assets/logo-beeflow.png" alt="" aria-hidden="true">
+                    <span>Beeflow</span>
+                </a>
+                <div class="pn-topbar-meta">
+                    <span id="refresh-state" class="pn-refresh" aria-live="polite"></span>
+                    <span id="viewer-name" class="pn-viewer"></span>
+                    <button id="logout" type="button" class="pn-btn pn-btn-text">Sair</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="pn-main">
+            <div class="pn-heading">
+                <div>
+                    <h1 id="account-title">Operação</h1>
+                    <p id="account-sub" class="pn-muted"></p>
+                </div>
+                <button id="refresh-now" type="button" class="pn-btn pn-btn-outline">Atualizar</button>
+            </div>
+
+            <!-- Notificação no celular (Web Push). Some quando o servidor está sem
+                 chaves ou o navegador não tem push. Ver painel.js. -->
+            <section id="push-card" class="pn-push" hidden>
+                <div class="pn-push-text">
+                    <p id="push-title" class="pn-push-title"></p>
+                    <p id="push-desc" class="pn-muted pn-small"></p>
+                </div>
+                <div class="pn-push-actions">
+                    <button id="push-on" type="button" class="pn-btn pn-btn-primary" hidden>Ativar</button>
+                    <button id="push-test" type="button" class="pn-btn pn-btn-outline" hidden>Enviar teste</button>
+                    <button id="push-off" type="button" class="pn-btn pn-btn-text" hidden>Desligar</button>
+                </div>
+            </section>
+
+            <div id="panel-error" class="pn-banner pn-banner-bad" role="alert" hidden></div>
+
+            <section id="kpis" class="pn-kpis" aria-label="Resumo"></section>
+
+            <section class="pn-section" aria-labelledby="creators-title">
+                <div class="pn-section-head">
+                    <h2 id="creators-title">Criadoras</h2>
+                    <p class="pn-muted">A Privacy encerra a sessão 6h depois do login. Reconecte antes de vencer para a equipe não ficar sem acesso.</p>
+                </div>
+                <div id="creators" class="pn-creators"></div>
+            </section>
+
+            <section class="pn-section" aria-labelledby="team-title">
+                <div class="pn-section-head pn-section-head-row">
+                    <h2 id="team-title">Equipe</h2>
+                    <div id="team-filters" class="pn-tabs" role="tablist" aria-label="Filtrar equipe">
+                        <button type="button" role="tab" data-filter="all" aria-selected="true">Todos</button>
+                        <button type="button" role="tab" data-filter="online" aria-selected="false">Online</button>
+                        <button type="button" role="tab" data-filter="available" aria-selected="false">Disponíveis</button>
+                        <button type="button" role="tab" data-filter="missing" aria-selected="false">Ausentes no turno</button>
+                    </div>
+                </div>
+                <div class="pn-table-wrap">
+                    <table class="pn-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Pessoa</th>
+                                <th scope="col">Situação</th>
+                                <th scope="col">Turno</th>
+                                <th scope="col">Horas hoje</th>
+                                <th scope="col" class="col-usage">Uso agora</th>
+                                <th scope="col">Criadoras</th>
+                            </tr>
+                        </thead>
+                        <tbody id="team"></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Reconectar: navegador remoto -->
+    <dialog id="reconnect-dialog" class="pn-dialog pn-remote" aria-labelledby="rc-title">
+        <div class="pn-remote-head">
+            <div class="pn-remote-title">
+                <h2 id="rc-title">Reconectar <span id="rc-name"></span></h2>
+                <p class="pn-muted pn-small">Faça o login da criadora na tela abaixo. Captcha e código de verificação funcionam normalmente.</p>
+            </div>
+            <button id="rc-close" type="button" class="pn-btn pn-btn-outline">Cancelar</button>
+        </div>
+        <div id="rc-screen" class="pn-remote-screen">
+            <img id="rc-frame" alt="" draggable="false">
+            <div id="rc-overlay" class="pn-remote-overlay" role="status">
+                <span class="pn-remote-spin" aria-hidden="true"></span>
+                <span id="rc-overlay-text">Abrindo o navegador…</span>
+                <button id="rc-retry" type="button" class="pn-btn pn-btn-primary" hidden>Tentar de novo</button>
+            </div>
+            <textarea id="rc-keys" class="pn-remote-keys" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Digitar no navegador remoto"></textarea>
+        </div>
+        <div class="pn-remote-foot">
+            <p id="rc-status" class="pn-muted pn-small" aria-live="polite"></p>
+            <button id="rc-finish" type="button" class="pn-btn pn-btn-primary" disabled>Já entrei</button>
+        </div>
+    </dialog>
+
+    <div id="toast" class="pn-toast" role="status" hidden></div>
+</body>
+</html>
