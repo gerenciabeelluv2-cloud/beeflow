@@ -22,8 +22,9 @@
     const PROD_API = 'https://api.beeflowapp.com';
     const STORAGE_KEY = 'beeflow.panel.session';
     const REFRESH_MS = 30_000;
-    /** A Privacy dá 6h de sessão; base da barra de validade. */
-    const SESSION_SPAN_MS = 6 * 3600_000;
+    /** Duração de uma sessão nova por plataforma; base da barra de validade. */
+    const SESSION_SPAN_MS = { privacy: 6 * 3600_000, fatalfans: 7 * 24 * 3600_000 };
+    const DEFAULT_SESSION_SPAN_MS = 6 * 3600_000;
     const BASE_TITLE = 'Painel — Beeflow';
 
     const $ = (id) => document.getElementById(id);
@@ -149,7 +150,7 @@
         missing: { label: 'Ausente no turno', tone: 'bad' },
         off: { label: 'Fora do turno', tone: 'idle' },
     };
-    const PROVIDER_LABEL = { privacy: 'Privacy', onlyfans: 'OnlyFans' };
+    const PROVIDER_LABEL = { privacy: 'Privacy', onlyfans: 'OnlyFans', fatalfans: 'FatalFans' };
 
     function duration(ms) {
         const totalMin = Math.max(0, Math.round(ms / 60_000));
@@ -422,7 +423,7 @@
         return el('div', { class: 'pn-creator-expiry' },
             el('strong', { 'data-live': `until:${s.expires_at}`, 'data-prefix': 'Reconectar em ' }, `Reconectar em ${until(s.expires_at)}`),
             el('span', {}, `A sessão vence ${when(s.expires_at)}`),
-            meter(left / SESSION_SPAN_MS));
+            meter(left / (SESSION_SPAN_MS[c.provider] || DEFAULT_SESSION_SPAN_MS)));
     }
 
     function creatorNote(c) {
